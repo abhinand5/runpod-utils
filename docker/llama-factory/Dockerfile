@@ -1,4 +1,5 @@
 FROM runpod/pytorch:2.2.0-py3.10-cuda12.1.1-devel-ubuntu22.04
+LABEL org.opencontainers.image.source="https://github.com/abhinand5/runpod-utils"
 
 WORKDIR /workspace
 
