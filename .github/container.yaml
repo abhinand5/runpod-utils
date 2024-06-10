@@ -25,5 +25,6 @@ jobs:
 
           - name: 'Build Inventory Image'
             run: |
+              cd docker/llama-factory
               docker build . --tag ghcr.io/abhinand/runpod-pytorch-llama-factory:latest
               docker push ghcr.io/abhinand/runpod-pytorch-llama-factory:latest
