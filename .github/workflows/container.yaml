@@ -11,7 +11,7 @@ jobs:
         runs-on: ubuntu-latest
         defaults:
           run:
-            working-directory: './builds'
+            working-directory: './docker'
         steps:
           - name: 'Checkout GitHub Action'
             uses: actions/checkout@main
@@ -25,6 +25,6 @@ jobs:
 
           - name: 'Build Inventory Image'
             run: |
-              cd docker/llama-factory
+              cd llama-factory
               docker build . --tag ghcr.io/abhinand/runpod-pytorch-llama-factory:latest
               docker push ghcr.io/abhinand/runpod-pytorch-llama-factory:latest
