@@ -11,7 +11,9 @@ RUN git clone --depth 1 https://github.com/hiyouga/LLaMA-Factory && \
 
 RUN pip install "unsloth[cu121-torch220] @ git+https://github.com/unslothai/unsloth.git"
 
-RUN pip install huggingface_hub[cli] nvitop
+RUN pip install huggingface_hub[cli] nvitop packaging ninja
+
+RUN pip install flash-attn --no-build-isolation
 
 RUN apt-get update && \
     apt-get install screen -y
