@@ -12,7 +12,6 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
-
 jobs:
   push-store-image:
     runs-on: ubuntu-latest
@@ -27,14 +26,16 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{github.actor}}
-          password: ${{secrets.GHCR_TOKEN}}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: 'Build Inventory Image'
+      - name: 'Build and Push Inventory Image'
         run: |
           cd llama-factory
-          docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-llama-factory
+          docker build --rm . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-llama-factory
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-llama-factory
+          docker system prune --all --force
           cd ../torch-lm-dev
-          docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
+          docker build --rm . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
+          docker system prune --all --force
