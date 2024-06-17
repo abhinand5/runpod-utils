@@ -20,11 +20,11 @@ jobs:
         working-directory: './docker'
     steps:
       - name: Maximize build space
-          uses: easimon/maximize-build-space@master
-          with:
-            root-reserve-mb: 512
-            swap-size-mb: 1024
-            remove-docker-images: 'true'
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 512
+          swap-size-mb: 1024
+          remove-docker-images: 'true'
 
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
