@@ -29,13 +29,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: 'Build and Push Inventory Image'
+      - name: 'Build and Push Inventory Image (llama-factory)'
         run: |
           cd llama-factory
           docker build --rm . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-llama-factory
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-llama-factory
+
+      - name: 'Cleanup after llama-factory'
+        run: |
           docker system prune --all --force
-          cd ../torch-lm-dev
+          docker builder prune --all --force
+
+      - name: 'Build and Push Inventory Image (torch-lm-dev)'
+        run: |
+          cd torch-lm-dev
           docker build --rm . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
+
+      - name: 'Final Cleanup'
+        run: |
           docker system prune --all --force
+          docker builder prune --all --force
