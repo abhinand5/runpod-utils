@@ -35,6 +35,6 @@ jobs:
           cd llama-factory
           docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-llama-factory
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-llama-factory
-          cd torch-lm-dev
+          cd ../torch-lm-dev
           docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
