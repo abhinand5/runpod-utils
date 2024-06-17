@@ -19,12 +19,10 @@ jobs:
       run:
         working-directory: './docker'
     steps:
-      # - name: Maximize build space
-      #   uses: easimon/maximize-build-space@master
-      #   with:
-      #     root-reserve-mb: 512
-      #     swap-size-mb: 1024
-      #     remove-docker-images: 'true'
+      - name: Remove unnecessary files
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
 
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
