@@ -1,37 +1,21 @@
-FROM pytorch/pytorch:2.3.1-cuda12.1-cudnn8-devel
+FROM runpod/pytorch:2.2.0-py3.10-cuda12.1.1-devel-ubuntu22.04
 LABEL org.opencontainers.image.source="https://github.com/abhinand5/runpod-utils"
 
 WORKDIR /workspace
 
-RUN apt-get update && \
-    apt-get install screen git build-essential wget curl -y
+RUN curl -fsSL https://code-server.dev/install.sh | sh
 
-RUN wget https://github.com/coder/code-server/releases/download/v4.90.2/code-server_4.90.2_amd64.deb && \
-    dpkg -i code-server_4.90.2_amd64.deb
+RUN git clone --depth 1 https://github.com/hiyouga/LLaMA-Factory && \
+    cd LLaMA-Factory && \
+    pip install -e '.[metrics,deepspeed,bitsandbytes]'
 
-RUN pip install git+https://github.com/huggingface/transformers
+RUN pip install "unsloth[cu121-torch220] @ git+https://github.com/unslothai/unsloth.git"
 
-RUN pip install datasets \
-    numpy \
-    scipy \
-    scikit-learn \
-    huggingface_hub \
-    nvitop \
-    packaging \
-    ninja \
-    bitsandbytes \
-    accelerate \
-    trl \
-    peft \
-    pandas \
-    matplotlib \
-    huggingface_hub[cli]
+RUN pip install huggingface_hub[cli] nvitop packaging ninja
 
 RUN pip install flash-attn --no-build-isolation
 
-# This downloads the cuda again...disabling temporarily!
-#RUN pip install "unsloth[cu121-torch230] @ git+https://github.com/unslothai/unsloth.git"
+RUN apt-get update && \
+    apt-get install screen -y
 
-EXPOSE 8080
-
-CMD ["code-server", "--bind-addr", "0.0.0.0:8080"]
+CMD [ "/start.sh" ]
