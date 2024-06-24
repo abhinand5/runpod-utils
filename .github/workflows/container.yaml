@@ -45,11 +45,17 @@ jobs:
           docker system prune --all --force
           docker builder prune --all --force
 
-      - name: 'Build and Push Inventory Image (torch-lm-dev)'
+      # - name: 'Build and Push Inventory Image (torch-lm-dev)'
+      #   run: |
+      #     cd torch-lm-dev
+      #     docker build --rm . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
+      #     docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
+
+      - name: 'Build and Push Inventory Image (torch-sft)'
         run: |
-          cd torch-lm-dev
-          docker build --rm . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.3.1-lm-dev
+          cd sft
+          docker build --rm . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-sft
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-sft
 
       - name: 'Final Cleanup'
         run: |
