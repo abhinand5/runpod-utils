@@ -12,18 +12,14 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
+
 jobs:
-  build-and-push-docker:
+  build-docker-image:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: './docker'
     steps:
-      - name: Remove unnecessary files
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
 
@@ -31,16 +27,16 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          username: ${{github.actor}}
+          password: ${{secrets.GHCR_TOKEN}}
 
-      - name: 'Build and Push Inventory Image (llama-factory)'
+      - name: 'Build Inventory Image'
         run: |
           cd llama-factory
-          docker build --rm . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-llama-factory
+          docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-llama-factory
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pytorch-2.2.0-llama-factory
-
-      - name: 'Cleanup after llama-factory'
+      
+      - name: 'Intermediate Cleanup'
         run: |
           docker system prune --all --force
           docker builder prune --all --force
