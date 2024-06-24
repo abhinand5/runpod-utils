@@ -24,7 +24,7 @@ RUN git clone --depth 1 https://github.com/OpenAccess-AI-Collective/axolotl && \
     cd axolotl && \
     pip install packaging ninja && \
     # Temporarily loosen the xformers version
-    sed -i 's/xformers==0.0.26.post1/xformers/' requirements.txt \
+    sed -i 's/xformers==0.0.26.post1/xformers/' requirements.txt && \
     pip3 install -e '.'
 
 RUN pip install "unsloth[cu121-torch220] @ git+https://github.com/unslothai/unsloth.git"
