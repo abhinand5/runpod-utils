@@ -5,7 +5,7 @@ WORKDIR /workspace
 
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
-RUN git clone --depth 1 git clone https://github.com/oobabooga/text-generation-webui && \
+RUN git clone https://github.com/oobabooga/text-generation-webui && \
     cd text-generation-webui && \
     pip install -r requirements.txt
 
