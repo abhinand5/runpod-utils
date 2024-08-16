@@ -10,7 +10,9 @@ RUN wget https://github.com/coder/code-server/releases/download/v4.90.2/code-ser
     dpkg -i code-server_4.90.2_amd64.deb
     
 RUN pip install ipykernel ipywidgets
-    
+
 EXPOSE 8080
 
+# Override baseimage entry point
+ENTRYPOINT []
 CMD ["code-server", "--bind-addr", "0.0.0.0:8080"]
