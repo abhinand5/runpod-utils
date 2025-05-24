@@ -94,3 +94,30 @@ jobs:
         run: |
           docker system prune --all --force
           docker builder prune --all --force
+  
+  build-docker-image-4:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: './docker'
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@main
+
+      - name: 'Login to GitHub Container Registry'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GHCR_TOKEN}}
+
+      - name: 'Build Inventory Image'
+        run: |
+          cd cuda-dev
+          docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cuda-12.3.2-dev
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cuda-12.3.2-dev
+      
+      - name: 'Intermediate Cleanup'
+        run: |
+          docker system prune --all --force
+          docker builder prune --all --force
