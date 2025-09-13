@@ -121,3 +121,30 @@ jobs:
         run: |
           docker system prune --all --force
           docker builder prune --all --force
+          
+  build-docker-image-5:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: './docker'
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@main
+
+      - name: 'Login to GitHub Container Registry'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GHCR_TOKEN}}
+
+      - name: 'Build Inventory Image'
+        run: |
+          cd torch-dev-lite
+          docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:torch-dev-lite-12.6
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:torch-dev-lite-12.6
+      
+      - name: 'Intermediate Cleanup'
+        run: |
+          docker system prune --all --force
+          docker builder prune --all --force
